@@ -2,25 +2,42 @@
 <html lang="ja">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>LOGIN</title>
+    <title>ミニ掲示板</title>
     <link rel="stylesheet" href="./style.css" type="text/css">
     <script>
-        function setId() {
-            var id = document.querySelector('#id_input').value;
-            localStorage.setItem('id', id);
-            location.href = "/";
+        function init() {
+            var id = localStorage.getItem('id');
+            if (id == null) {
+                location.href = './login';
+            }
+            document.querySelector('#id').textContent = 'ID:' + id;
+            document.querySelector('#id_input').value = id;
         }
     </script>
 </head>
-<body>
+<body onload="init();">
     <head>
-        <h1>LOGIN</h1>
+        <h1>掲示板</h1>
     </head>
     <div role="main">
-        <p>あなたのログインネームを入力してください。</p>
+        <p>※メッセージは最大10個まで保管されます。</p>
+        <form method="post" action="/">
+            <p>
+                <span id="id"></span>
+                <input type="hidden" name="id" id="id_input" value="">
+            </p>
+            <p>
+                <input type="text" name="msg" id="msg">
+                <input type="submit" value="送信">
+            </p>
+        </form>
+        <hr>
         <p>
-            <input type="text" name="id_input" id="id_input">
-            <button onclick="setId();">送信</button>
+            <table style="width: 85%;">
+                <% for(var i in data) { %>
+                    <%- include('data_item', {val:data[i]}) %>
+                <% } %>
+            </table>
         </p>
     </div>
 </body>
